@@ -1,0 +1,11 @@
+export/
+out/
+.idea/
+*/project/obj
+*/ndll
+*.xcworkspace
+*.xcuserstate
+*.xcscheme
+*.xcuserdatad
+*.iml
+*.ipa
