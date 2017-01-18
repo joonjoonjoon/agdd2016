@@ -11,26 +11,50 @@ import flixel.group.FlxGroup;
  * @author Zaphod
  */
 class PlayState extends FlxState
-{
-	private var _player1:Player;
-	private var _player2:Player;
-	private var _obstacles:FlxGroup;
+{	
+	
+	private var thickness:Int = 15;
+	private var players:FlxGroup;
+	private var obstacles:FlxGroup;
 	
 	override public function create():Void 
 	{
-        _player1 = new Player(50, 50, LEFT, RIGHT, UP);
-		add(_player1);
+		players = new FlxGroup();
+		obstacles = new FlxGroup();
 		
-		_player2 = new Player(150, 50, A,D,W);
-		add(_player2);
 		
-		_obstacles = new FlxGroup();
+		// make player objects
+		
+
+		var coolplayer:CoolPlayer = new CoolPlayer(100, 100, A, D, W);
+	    players.add(coolplayer);
+		var coolplayer2:CoolPlayer = new CoolPlayer(150, 100, J, L, I);
+		players.add(coolplayer2);
+		
+		// make obstacles
+		
+		var newObstacle:CoolObstacle = new CoolObstacle(0, 0, thickness, FlxG.height);
+		obstacles.add(newObstacle);
+		var newObstacle:CoolObstacle = new CoolObstacle(FlxG.width - thickness, 0, thickness, FlxG.height);
+		obstacles.add(newObstacle);
+		var newObstacle:CoolObstacle = new CoolObstacle(0, FlxG.height-thickness, FlxG.width, thickness);
+		obstacles.add(newObstacle);
+		
+		add(players);
+		add(obstacles);
+	}
 	
-		makeObstacle(0, 200, 500, 15);
-		makeObstacle(0, 0, 15, 500);
-		makeObstacle(FlxG.width-15, 0, 15, 500);
+	override public function update(elapsed:Float):Void 
+	{
+		super.update(elapsed);
 		
-		add(_obstacles);
+		FlxG.collide(players, obstacles);
+		FlxG.collide(players, players);
+		
+		if (FlxG.keys.anyJustPressed([R]))
+		{
+			FlxG.switchState(new PlayState());
+		}
 	}
 	
 	private function makeObstacle(X:Int, Y:Int, W:Int, H:Int)
@@ -41,20 +65,9 @@ class PlayState extends FlxState
 		obstacle.makeGraphic(W, H, 0xffffff00);
 		obstacle.solid = true;
 		obstacle.immovable = true;
-		_obstacles.add(obstacle);
+		//_obstacles.add(obstacle);
 		
 	}
 	
-	override public function update(elapsed:Float):Void 
-	{
-		super.update(elapsed);
-		FlxG.collide(_player2, _player1);
-		FlxG.collide(_player2, _obstacles);
-		FlxG.collide(_player1, _obstacles);
-		
-		if (FlxG.keys.anyJustPressed([R]))
-		{
-			FlxG.switchState(new PlayState());
-		}
-	}
+	
 }

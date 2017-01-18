@@ -27,7 +27,6 @@ public class Player : MonoBehaviour {
         xAxis = 0;
         if(Input.GetKey(keyLeft))
         {
-            
             xAxis = -1;
         }
         if (Input.GetKey(keyRight))
@@ -44,9 +43,9 @@ public class Player : MonoBehaviour {
     {
         if(yPressed && feet.touching > 0)
         {
-            rigidBody.AddForce(Vector3.up * jumpStrength * Time.deltaTime);
+            rigidBody.AddForce(Vector3.up * jumpStrength * Time.fixedDeltaTime);
             yPressed = false;
         }
-        rigidBody.AddForce(Vector3.left * speed * xAxis * Time.deltaTime);
+        rigidBody.AddForce(Vector3.left * speed * xAxis * Time.fixedDeltaTime);
     }
 }
